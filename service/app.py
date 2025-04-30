@@ -1,5 +1,5 @@
 import logging
-
+import joblib
 from flask import Flask, jsonify, render_template, request
 from pydantic import BaseModel, ValidationError, field_validator
 
@@ -21,6 +21,7 @@ class Apartment(BaseModel):
 
 
 app = Flask(__name__)
+model = joblib.load('models/linear_regression_model.pkl')
 
 # Маршрут для отображения формы
 @app.route('/')
@@ -33,7 +34,12 @@ def process_numbers():
     try:
         json_ = request.json
         apartment = Apartment.model_validate(json_)
-        return jsonify({"message": "Данные валидны", "data": apartment.model_dump()})
+        area = apartment.area
+
+        prediction = model.predict([[area]])
+        pretty_prediction = round((prediction[0] / 1_000_000), 2)
+        
+        return jsonify({"message": "Данные валидны", "prediction": pretty_prediction })
     except ValidationError as e:
         return e.json(), 422, {'Content-Type': 'application/json'}
 

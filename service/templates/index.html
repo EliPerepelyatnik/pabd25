@@ -74,12 +74,12 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => {
-                    response_data = response.json()
-                    if (response.status == 422) {
+                .then(response => response_data = response.json())
+                    .then( data => {
+                    if (data.status == 422) {
                         document.getElementById('response').innerText = "Произошла ошибка при валидации даннных";
                     } else {
-                        document.getElementById('response').innerText = 'Ответ сервера: ' + JSON.stringify(response_data);
+                        document.getElementById('response').innerText = 'Предсказанная цена: ' + data.prediction + ' млн руб.';
                     }
                 })
                 .catch(error => {
