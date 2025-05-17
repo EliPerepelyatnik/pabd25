@@ -21,7 +21,7 @@ class Apartment(BaseModel):
 
 
 app = Flask(__name__)
-model = joblib.load('models/linear_regression_model.pkl')
+model = joblib.load('models/gbr_model_v15.pkl')
 
 # Маршрут для отображения формы
 @app.route('/')
@@ -35,8 +35,11 @@ def process_numbers():
         json_ = request.json
         apartment = Apartment.model_validate(json_)
         area = apartment.area
+        num_rooms = apartment.num_rooms
+        total_floors = apartment.total_floors
+        floor = apartment.floor
 
-        prediction = model.predict([[area]])
+        prediction = model.predict([[area, num_rooms, total_floors, floor]])
         pretty_prediction = round((prediction[0] / 1_000_000), 2)
         
         return jsonify({"message": "Данные валидны", "prediction": pretty_prediction })
