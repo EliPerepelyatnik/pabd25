@@ -1,0 +1,31 @@
+stages:
+  parsing:
+    cmd: python src/parse_cian_new.py
+    deps:
+      - parse_cian_new.py
+    outs:
+      - data/raw/1-2-3_flats.csv
+
+  eda:
+    cmd: python src/eda.py
+    deps:
+      - eda.py
+      - data/raw/1-2-3_flats.csv
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv 
+  
+  train_model:
+    cmd: python src/train_model.py
+    deps:
+      - data/processed/train.csv
+      - train_model.py
+    outs:
+      - models/model_gbr_2105.pkl
+
+  test_model:
+    cmd: python src/test_model.py
+    deps:
+      - data/processed/test.csv
+      - models/model_gbr_2105.pkl
+      - test_model.py
