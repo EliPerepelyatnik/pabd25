@@ -7,3 +7,6 @@ matplotlib
 seaborn
 numpy
 jupyter
+flask_cors
+python-dotenv
+flask-httpauth
