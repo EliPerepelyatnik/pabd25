@@ -112,4 +112,4 @@ def process_numbers():
         return e.json(), 422, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

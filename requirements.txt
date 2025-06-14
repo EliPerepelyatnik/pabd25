@@ -10,3 +10,5 @@ jupyter
 flask_cors
 python-dotenv
 flask-httpauth
+gunicorn
+boto3
